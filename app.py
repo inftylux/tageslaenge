@@ -3,9 +3,78 @@ from astral import LocationInfo
 from astral.sun import sun
 import pytz
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo 
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
+from timezonefinder import TimezoneFinder 
+
+def get_location_info(lat, lon):
+    geolocator = Nominatim(user_agent="geoapi")
+    tf = TimezoneFinder() 
+
+    try:
+        location = geolocator.reverse((lat, lon), language="de", timeout=5)
+    except (GeocoderTimedOut, GeocoderUnavailable):
+        return {"city": "?", "country": "?", "timezone": "?"}
+
+    if not location:
+        return {"city": "?", "country": "?", "timezone": "?"}
+
+    address = location.raw.get("address", {})
+
+    # Stadt (verschiedene mögliche Felder)
+    city = next(
+        (address[key] for key in ["city", "town", "village", "hamlet", "municipality"]
+         if key in address and address[key]),
+        "?"
+    )
+
+    # Land
+    country = address.get("country", "?")
+    # --- Zeitzone mit timezonefinder --- 
+    try: 
+        tz = tf.timezone_at(lat=lat, lng=lon) 
+        if tz: 
+            timezone = tz 
+    except Exception: 
+        pass # bleibt "?"
+    # Zeitzone (falls verfügbar)
+    #timezone = location.raw.get("timezone", "?")
+
+    return {"city": city, "country": country, "timezone": timezone}
+
+
+
+def normalize_timezone(tz):
+    """
+    Gibt die übergebene Zeitzone zurück.
+    Falls tz '?' ist oder None, wird 'Europe/Berlin' verwendet.
+    """
+    if not tz or tz == "?":
+        return "Europe/Berlin"
+    return tz
+
+
+def timezone_to_utc_offset(tz_name):
+    """
+    Wandelt eine Zeitzone wie 'Europe/Berlin' in 'UTC+1' oder 'UTC+2' um.
+    Falls tz_name '?' ist, wird 'UTC+1' (Europe/Berlin) verwendet.
+    """
+    if not tz_name or tz_name == "?":
+        tz_name = "Europe/Berlin"
+
+    try:
+        now = datetime.now(ZoneInfo(tz_name))
+        offset = now.utcoffset()
+        hours = int(offset.total_seconds() // 3600)
+        return f"UTC{hours:+d}"
+    except Exception:
+        return "UTC+1"   # Fallback
+
 
 # --- Streamlit Page Config ---
 st.set_page_config(
@@ -25,10 +94,30 @@ st.sidebar.header("📍 Standort & Einstellungen")
 
 lat = st.sidebar.number_input("Breitengrad", value=51.0504, format="%.6f")
 lon = st.sidebar.number_input("Längengrad", value=13.7373, format="%.6f")
+
+#result = search_location_by_coordinates(lat,lon)
+#st.sidebar.header(result)
+
+#geolocator = Nominatim(user_agent="geoapi")
+#location = geolocator.reverse((lat, lon), language="de") 
+wo = get_location_info(lat,lon)
+tz = normalize_timezone(wo['timezone'])
+tz2 = timezone_to_utc_offset(wo['timezone'])
+
+st.sidebar.subheader('Ort:')
+st.sidebar.text(f"{wo['city']}, {wo['country']}")
+st.sidebar.subheader('Zeitzone:')
+st.sidebar.text(f"{wo['timezone']}")
+st.sidebar.text(f"{tz2}")
+#st.sidebar.header(location.address) 
+#st.sidebar.header(location.raw["address"].get("city")) 
+
 year = st.sidebar.number_input("Jahr", value=2026, step=1)
 
-timezone = pytz.timezone("Europe/Berlin")
-city = LocationInfo("Custom", "Earth", "Europe/Berlin", lat, lon)
+st.sidebar.markdown('<a href="mailto:astro01239@gmail.com">Feedback</a>', unsafe_allow_html=True)
+
+timezone = pytz.timezone(tz)
+city = LocationInfo("Custom", "Earth", tz, lat, lon)
 
 # --- Berechnung ---
 start = datetime(year, 1, 1, tzinfo=timezone)
@@ -167,7 +256,7 @@ with tab2:
             dates[idx_min_dl].strftime("%d.%m.%Y"),
             dates[idx_max_dl].strftime("%d.%m.%Y"),
         ],
-        "Wert": [
+        "Zeit": [
             sr_str[idx_min_sr],
             sr_str[idx_max_sr],
             ss_str[idx_min_ss],
@@ -191,7 +280,7 @@ with tab3:
             "Sonnenaufgang": sr.strftime("%H:%M"),
             "Sonnenuntergang": ss.strftime("%H:%M"),
             "Tageslänge (h)": f"{int(dl)}:{int((dl % 1) * 60):02d}",
-            "*": "*" if (i-1) in extreme_indices else ""
+            "MinMax": "*" if (i-1) in extreme_indices else ""
         })
 
     df = pd.DataFrame(rows)
