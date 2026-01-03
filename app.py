@@ -139,7 +139,9 @@ with tab1:
         yaxis_title="Stunden",
         hovermode="x unified",
         template="plotly_white",
-        height=500
+        height=600,
+        xaxis=dict(showgrid=True, gridcolor="gray", gridwidth=0.1, griddash="dot", nticks=30), 
+        yaxis=dict(showgrid=True, gridcolor="gray", gridwidth=0.1, griddash="dot", nticks=30) 
     )
 
     st.plotly_chart(fig, use_container_width=True)
