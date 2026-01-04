@@ -338,12 +338,13 @@ extreme_indices = {
 }
 
 # Tabs
-tab1, tab2, tab3 = st.tabs([T["chart"], T["extremes"], T["table"]])
+tab1, tab2, tab3, tab4 = st.tabs([T["chart"], T["extremes"], T["table"],'ⓘ Impressum'])
 
 # ---------------------------------------------------------
 # 📈 Diagramm (mit Linienstilen & Markern)
 # ---------------------------------------------------------
 with tab1:
+    st.subheader("📈 Interaktives Jahresdiagramm")
     fig = go.Figure()
 
     # Sonnenaufgang – gestrichelte Linie
@@ -414,6 +415,7 @@ with tab1:
 # ⭐ Extremwerte
 # ---------------------------------------------------------
 with tab2:
+    st.subheader("⭐ Extremwerte des Jahres")
     df_ext = pd.DataFrame({
         T["event_col"]: [
             T["min_sunrise"], T["max_sunrise"],
@@ -444,6 +446,7 @@ with tab2:
 # 📅 Jahrestabelle
 # ---------------------------------------------------------
 with tab3: 
+    st.subheader("📅 Tabelle aller Tage")
     rows = [] 
     for i, (d, srt, sst, dlen) in enumerate(zip(dates, sr_str, ss_str, dl_str), start=1): 
         rows.append({ 
@@ -454,6 +457,7 @@ with tab3:
             T["day_col"]: dlen, 
             T["minmax_col"]: "*" if (i - 1) in extreme_indices else "" 
             }) 
-        df = pd.DataFrame(rows) 
-        st.dataframe(df, use_container_width=True)
+    df = pd.DataFrame(rows) 
+    st.dataframe(df, use_container_width=True)
+# ---------------------------------------------------------
 
