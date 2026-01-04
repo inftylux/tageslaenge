@@ -61,7 +61,7 @@ LANG = {
         "ordinate": "Stunde des Tages [h]",
         "impressum": ":information_source: Impressum",
         "map": ":earth_africa: Karte",
-        "long_map": ":earth_africa: Standortauswahl",
+        "long_map": ":earth_africa: Standortauswahl Zoom & Click",
     },
     "en": {
         "title": "🌅 Annual Sunlight Analysis",
@@ -98,7 +98,7 @@ LANG = {
         "ordinate": "Hour of the day [h]",
         "impressum": ":information_source: Legal Notice",
         "map": ":earth_africa: Map",
-        "long_map": ":earth_africa: Pick location from map",
+        "long_map": ":earth_africa: Pick location from map, Zoom & Click",
     },
     "fr": {
         "title": "🌅 Analyse annuelle du soleil",
@@ -135,7 +135,7 @@ LANG = {
         "ordinate": "Heure du jour [h]",
         "impressum": ":information_source: Mentions Légales",
         "map": ":earth_africa: Carte",
-        "long_map": ":earth_africa: Choisissez un lieu sur la carte",
+        "long_map": ":earth_africa: Choisissez un lieu sur la carte, zoomer et cliquer",
     },
     "es": {
         "title": "🌅 Análisis anual de luz solar",
@@ -172,7 +172,7 @@ LANG = {
         "ordinate": "Hora del día [h]",
         "impressum": ":information_source: Aviso Legal",
         "map": ":earth_africa: Mapa",
-        "long_map": ":earth_africa: Selecciona un lugar en el mapa",
+        "long_map": ":earth_africa: Selecciona un lugar en el mapa, zoom y clic",
      },
     "ru": {
         "title": "🌅 Годовой анализ солнечного света",
@@ -209,7 +209,7 @@ LANG = {
         "ordinate": "Час дня [h]",
         "impressum": ":information_source: Выходные данные",
         "map": ":earth_africa: Карта",
-        "long_map": ":earth_africa: Выберите место на карте",
+        "long_map": ":earth_africa: Выберите место на карте, зум и клик",
     }
 }
 
@@ -298,9 +298,9 @@ if "language" not in st.session_state:
 T = LANG[st.session_state.language]
 # Lat, Lon initialisieren
 if "lat" not in st.session_state:
-    st.session_state.lat = 51.05
+    st.session_state.lat = 51.049758
 if "lon" not in st.session_state:
-    st.session_state.lon = 13.74
+    st.session_state.lon = 13.738060
 
 # Titel
 st.markdown(f"# {T['title']}")
@@ -510,7 +510,7 @@ with tab3:
 # ---------------------------------------------------------
 with tab4: 
     st.title(T["long_map"])
-    m = folium.Map(location=[st.session_state.lat, st.session_state.lon], zoom_start=8)
+    m = folium.Map(location=[st.session_state.lat, st.session_state.lon], zoom_start=9)
     output = st_folium(m, width=700, height=500)
     
     # Koordinaten auslesen, wenn ein Klick erfolgt ist
