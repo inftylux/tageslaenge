@@ -180,6 +180,7 @@ with tab1:
         mode="lines",
         name="Sonnenaufgang",
         line=dict(color="#1f77b4"),
+        line_dash="dashdot",
         customdata=sr_str,
         hovertemplate="<br>%{customdata}"
     ))
@@ -190,6 +191,7 @@ with tab1:
         mode="lines",
         name="Sonnenuntergang",
         line=dict(color="#ff7f0e"),
+        line_dash="dash",
         customdata=ss_str,
         hovertemplate="<br>%{customdata}"
     ))
@@ -200,32 +202,34 @@ with tab1:
         mode="lines",
         name="Tageslänge",
         line=dict(color="#2ca02c"),
+        line_dash="solid",
         customdata=dl_str,
         hovertemplate="<br>%{customdata}"
     ))
 
     # Marker-Funktion
-    def add_marker(idx, label, color, value_str, y_value):
+    def add_marker(idx, label, color, value_str, y_value, symbol, textposition):
         fig.add_trace(go.Scatter(
             x=[dates[idx]], y=[y_value],
-            mode="markers",
+            mode="markers+text",
             name=label,
-            marker=dict(color=color, size=10),
+            text=[label], textposition=textposition,
+            marker=dict(color=color, size=15, symbol=symbol),
             customdata=[value_str],
             hovertemplate=f"{label}: %{{customdata}}"
         ))
 
-    add_marker(idx_min_sr, "Min Aufgang", "blue", sr_str[idx_min_sr], sr_hours[idx_min_sr])
-    add_marker(idx_max_sr, "Max Aufgang", "cyan", sr_str[idx_max_sr], sr_hours[idx_max_sr])
-    add_marker(idx_min_ss, "Min Untergang", "red", ss_str[idx_min_ss], ss_hours[idx_min_ss])
-    add_marker(idx_max_ss, "Max Untergang", "darkred", ss_str[idx_max_ss], ss_hours[idx_max_ss])
-    add_marker(idx_min_dl, "Min Tageslänge", "green", dl_str[idx_min_dl], day_lengths[idx_min_dl])
-    add_marker(idx_max_dl, "Max Tageslänge", "lime", dl_str[idx_max_dl], day_lengths[idx_max_dl])
+    add_marker(idx_min_sr, "Min Aufgang", "blue", sr_str[idx_min_sr], sr_hours[idx_min_sr],'triangle-down',"bottom center")
+    add_marker(idx_max_sr, "Max Aufgang", "cyan", sr_str[idx_max_sr], sr_hours[idx_max_sr],'triangle-up',"bottom center")
+    add_marker(idx_min_ss, "Min Untergang", "red", ss_str[idx_min_ss], ss_hours[idx_min_ss],'triangle-down',"top center")
+    add_marker(idx_max_ss, "Max Untergang", "darkred", ss_str[idx_max_ss], ss_hours[idx_max_ss],'triangle-up',"top center")
+    add_marker(idx_min_dl, "Min Tageslänge", "green", dl_str[idx_min_dl], day_lengths[idx_min_dl],'triangle-down',"top center")
+    add_marker(idx_max_dl, "Max Tageslänge", "lime", dl_str[idx_max_dl], day_lengths[idx_max_dl],'triangle-up',"top center")
 
     fig.update_layout(
         title=f"Sonnenaufgang, Sonnenuntergang und Tageslänge – {year}",
         xaxis_title="Datum",
-        yaxis_title="Stunden",
+        yaxis_title="Tageszeit [h]",
         hovermode="x unified",
         template="plotly_white",
         height=600,
