@@ -37,6 +37,9 @@ LANG = {
         "chart": "📈 Diagramm",
         "extremes": "⭐ Extremwerte",
         "table": "📅 Jahrestabelle",
+        "long_chart": "📈 Interaktives Diagramm",
+        "long_extremes": "⭐ Extremwerte des Jahres",
+        "long_table": "📅 Tabelle aller Tage des Jahres",
         "sunrise": "Sonnenaufgang",
         "sunset": "Sonnenuntergang",
         "daylength": "Tageslänge",
@@ -54,6 +57,7 @@ LANG = {
         "minmax_col": "Min/Max",
         "lang": "Sprache",
         "ordinate": "Stunde des Tages [h]",
+        "impressum": ":information_source: Impressum",
     },
     "en": {
         "title": "🌅 Annual Sunlight Analysis",
@@ -68,6 +72,9 @@ LANG = {
         "chart": "📈 Chart",
         "extremes": "⭐ Extremes",
         "table": "📅 Year table",
+        "long_chart": "📈 Interactive chart",
+        "long_extremes": "⭐ Annual extreme values",
+        "long_table": "📅 Table of all days of the year",
         "sunrise": "Sunrise",
         "sunset": "Sunset",
         "daylength": "Day length",
@@ -85,6 +92,7 @@ LANG = {
         "minmax_col": "Min/Max",
         "lang": "Language",
         "ordinate": "Hour of the day [h]",
+        "impressum": ":information_source: Legal Notice",
     },
     "fr": {
         "title": "🌅 Analyse annuelle du soleil",
@@ -99,6 +107,9 @@ LANG = {
         "chart": "📈 Diagramme",
         "extremes": "⭐ Valeurs extrêmes",
         "table": "📅 Tableau annuel",
+        "long_chart": "📈 Graphique interactif",
+        "long_extremes": "⭐ Valeurs extrêmes de l'année",
+        "long_table": "📅 Tableau de tous les jours de l'année",        
         "sunrise": "Lever du soleil",
         "sunset": "Coucher du soleil",
         "daylength": "Durée du jour",
@@ -116,6 +127,7 @@ LANG = {
         "minmax_col": "Min/Max",
         "lang": "Langue",
         "ordinate": "Heure du jour [h]",
+        "impressum": ":information_source: Mentions Légales",
     },
     "es": {
         "title": "🌅 Análisis anual de luz solar",
@@ -130,6 +142,9 @@ LANG = {
         "chart": "📈 Gráfico",
         "extremes": "⭐ Valores extremos",
         "table": "📅 Tabla anual",
+        "long_chart": "📈 Gráfico interactivo",
+        "long_extremes": "⭐ Valores extremos del año",
+        "long_table": "📅 Tabla de todos los días del año",        
         "sunrise": "Amanecer",
         "sunset": "Atardecer",
         "daylength": "Duración del día",
@@ -147,6 +162,7 @@ LANG = {
         "minmax_col": "Min/Max",
         "lang" : "Idioma",
         "ordinate": "Hora del día [h]",
+        "impressum": ":information_source: Aviso Legal",
     },
     "ru": {
         "title": "🌅 Годовой анализ солнечного света",
@@ -161,6 +177,9 @@ LANG = {
         "chart": "📈 Диаграмма",
         "extremes": "⭐ Экстремальные значения",
         "table": "📅 Таблица года",
+        "long_chart": "📈 Интерактивный график",
+        "long_extremes": "⭐ Экстремальные значения года",
+        "long_table": "📅 Таблица всех дней года",        
         "sunrise": "Восход",
         "sunset": "Закат",
         "daylength": "Длина дня",
@@ -178,9 +197,9 @@ LANG = {
         "minmax_col": "Мин/Макс",
         "lang": "Язык",
         "ordinate": "Час дня [h]",
+        "impressum": ":information_source: Выходные данные",
     }
 }
-
 
 # ---------------------------------------------------------
 # 📍 Standort & Zeitzone
@@ -311,8 +330,8 @@ if new_lang != st.session_state.language:
     st.session_state.language = new_lang
     st.rerun()
 
-st.sidebar.markdown('<a href="mailto:astro01239@gmail.com">Feedback</a>', unsafe_allow_html=True)
-
+#st.sidebar.markdown('<a href="mailto:astro01239@gmail.com">"Feedback"</a>', unsafe_allow_html=True)
+st.sidebar.markdown("[✉ Feedback](mailto:astro01239@gmail.com)")
 # Berechnung
 dates, sr, ss, dl = compute_sun_times(lat, lon, year, tz)
 
@@ -338,13 +357,14 @@ extreme_indices = {
 }
 
 # Tabs
-tab1, tab2, tab3, tab4 = st.tabs([T["chart"], T["extremes"], T["table"],'ⓘ Impressum'])
+tab1, tab2, tab3, tab4 = st.tabs([T["chart"], T["extremes"], T["table"], T["impressum"]])
 
 # ---------------------------------------------------------
 # 📈 Diagramm (mit Linienstilen & Markern)
 # ---------------------------------------------------------
 with tab1:
-    st.subheader("📈 Interaktives Jahresdiagramm")
+    #st.subheader("📈 Interaktives Jahresdiagramm")
+    st.subheader(T['long_chart']+' '+str(year))
     fig = go.Figure()
 
     # Sonnenaufgang – gestrichelte Linie
@@ -415,7 +435,8 @@ with tab1:
 # ⭐ Extremwerte
 # ---------------------------------------------------------
 with tab2:
-    st.subheader("⭐ Extremwerte des Jahres")
+    #st.subheader("⭐ Extremwerte des Jahres")
+    st.subheader(T['long_extremes']+' '+str(year))
     df_ext = pd.DataFrame({
         T["event_col"]: [
             T["min_sunrise"], T["max_sunrise"],
@@ -446,7 +467,8 @@ with tab2:
 # 📅 Jahrestabelle
 # ---------------------------------------------------------
 with tab3: 
-    st.subheader("📅 Tabelle aller Tage")
+    #st.subheader("📅 Tabelle aller Tage")
+    st.subheader(T['long_table']+' '+str(year))
     rows = [] 
     for i, (d, srt, sst, dlen) in enumerate(zip(dates, sr_str, ss_str, dl_str), start=1): 
         rows.append({ 
@@ -459,5 +481,14 @@ with tab3:
             }) 
     df = pd.DataFrame(rows) 
     st.dataframe(df, use_container_width=True)
+# ---------------------------------------------------------
+# Impressum
+# ---------------------------------------------------------
+with tab4: 
+    st.subheader(T['impressum'])
+    #st.write('me')
+    #st.markdown("[✉ Feedback](mailto:astro01239@gmail.com)")
+    st.write("✉ [astro01239@gmail.com](mailto:astro01239@gmail.com)")
+
 # ---------------------------------------------------------
 
