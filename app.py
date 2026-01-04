@@ -27,7 +27,7 @@ import folium
 # ---------------------------------------------------------
 LANG = {
     "de": {
-        "title": "🌅 Jahresanalyse der Sonnenzeiten",
+        "title": "🌅 Jahresanalyse der Tageslänge",
         "subtitle": "Berechne Sonnenaufgang, Sonnenuntergang und Tageslänge für jeden Tag eines Jahres.",
         "location_settings": "📍 Standort & Einstellungen",
         "latitude": "Breitengrad",
@@ -64,7 +64,7 @@ LANG = {
         "long_map": ":earth_africa: Standortauswahl Zoom & Click",
     },
     "en": {
-        "title": "🌅 Annual Sunlight Analysis",
+        "title": "🌅 Annual variation in day length.",
         "subtitle": "Calculate sunrise, sunset and day length for every day of the year.",
         "location_settings": "📍 Location & Settings",
         "latitude": "Latitude",
@@ -101,7 +101,7 @@ LANG = {
         "long_map": ":earth_africa: Pick location from map, Zoom & Click",
     },
     "fr": {
-        "title": "🌅 Analyse annuelle du soleil",
+        "title": "🌅 Variation annuelle de la photopériode",
         "subtitle": "Calcule le lever, le coucher du soleil et la durée du jour pour chaque jour de l'année.",
         "location_settings": "📍 Localisation et paramètres",
         "latitude": "Latitude",
@@ -138,7 +138,7 @@ LANG = {
         "long_map": ":earth_africa: Choisissez un lieu sur la carte, zoomer et cliquer",
     },
     "es": {
-        "title": "🌅 Análisis anual de luz solar",
+        "title": "🌅 Variación estacional de la duración del día",
         "subtitle": "Calcula el amanecer, atardecer y duración del día para cada día del año.",
         "location_settings": "📍 Ubicación y ajustes",
         "latitude": "Latitud",
@@ -175,7 +175,7 @@ LANG = {
         "long_map": ":earth_africa: Selecciona un lugar en el mapa, zoom y clic",
      },
     "ru": {
-        "title": "🌅 Годовой анализ солнечного света",
+        "title": "🌅 Годовой ход продолжительности дня",
         "subtitle": "Рассчитайте время восхода, заката и длину дня для каждого дня года.",
         "location_settings": "📍 Местоположение и настройки",
         "latitude": "Широта",
