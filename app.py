@@ -363,8 +363,8 @@ tab1, tab2, tab3, tab4 = st.tabs([T["chart"], T["extremes"], T["table"], T["impr
 # 📈 Diagramm (mit Linienstilen & Markern)
 # ---------------------------------------------------------
 with tab1:
-    #st.subheader("📈 Interaktives Jahresdiagramm")
-    st.subheader(T['long_chart']+' '+str(year))
+    #st.subheader(f"{T['long_chart']} {T['sunrise']}, {T['sunset']} & {T['daylength']} {year}")
+    st.subheader(f"📈 {T['sunrise']}, {T['sunset']} & {T['daylength']} {year}")
     fig = go.Figure()
 
     # Sonnenaufgang – gestrichelte Linie
@@ -419,7 +419,7 @@ with tab1:
     add_marker(idx_max_dl, T["max_day"], "lime", dl_str[idx_max_dl], dl[idx_max_dl], "triangle-up", "top center")
 
     fig.update_layout(
-        title=f"{T['sunrise']}, {T['sunset']} & {T['daylength']} – {year}",
+        #title=f"{T['sunrise']}, {T['sunset']} & {T['daylength']} – {year}",
         xaxis_title=T["date_col"],
         yaxis_title=T["ordinate"],
         hovermode="x unified",
@@ -435,8 +435,7 @@ with tab1:
 # ⭐ Extremwerte
 # ---------------------------------------------------------
 with tab2:
-    #st.subheader("⭐ Extremwerte des Jahres")
-    st.subheader(T['long_extremes']+' '+str(year))
+    st.subheader(f"{T['long_extremes']} {year}")
     df_ext = pd.DataFrame({
         T["event_col"]: [
             T["min_sunrise"], T["max_sunrise"],
@@ -467,8 +466,7 @@ with tab2:
 # 📅 Jahrestabelle
 # ---------------------------------------------------------
 with tab3: 
-    #st.subheader("📅 Tabelle aller Tage")
-    st.subheader(T['long_table']+' '+str(year))
+    st.subheader(f"{T['long_table']} {year}")
     rows = [] 
     for i, (d, srt, sst, dlen) in enumerate(zip(dates, sr_str, ss_str, dl_str), start=1): 
         rows.append({ 
