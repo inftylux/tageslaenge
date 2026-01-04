@@ -6,3 +6,5 @@ pandas
 plotly
 timezonefinder
 geopy
+folium
+streamlit_folium

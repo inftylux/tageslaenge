@@ -19,6 +19,8 @@ from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
 from timezonefinder import TimezoneFinder
 
+from streamlit_folium import st_folium
+import folium
 
 # ---------------------------------------------------------
 # 🌍 Mehrsprachigkeit
@@ -58,6 +60,8 @@ LANG = {
         "lang": "Sprache",
         "ordinate": "Stunde des Tages [h]",
         "impressum": ":information_source: Impressum",
+        "map": ":earth_africa: Karte",
+        "long_map": ":earth_africa: Standortauswahl",
     },
     "en": {
         "title": "🌅 Annual Sunlight Analysis",
@@ -93,6 +97,8 @@ LANG = {
         "lang": "Language",
         "ordinate": "Hour of the day [h]",
         "impressum": ":information_source: Legal Notice",
+        "map": ":earth_africa: Map",
+        "long_map": ":earth_africa: Pick location from map",
     },
     "fr": {
         "title": "🌅 Analyse annuelle du soleil",
@@ -128,6 +134,8 @@ LANG = {
         "lang": "Langue",
         "ordinate": "Heure du jour [h]",
         "impressum": ":information_source: Mentions Légales",
+        "map": ":earth_africa: Carte",
+        "long_map": ":earth_africa: Choisissez un lieu sur la carte",
     },
     "es": {
         "title": "🌅 Análisis anual de luz solar",
@@ -163,7 +171,9 @@ LANG = {
         "lang" : "Idioma",
         "ordinate": "Hora del día [h]",
         "impressum": ":information_source: Aviso Legal",
-    },
+        "map": ":earth_africa: Mapa",
+        "long_map": ":earth_africa: Selecciona un lugar en el mapa",
+     },
     "ru": {
         "title": "🌅 Годовой анализ солнечного света",
         "subtitle": "Рассчитайте время восхода, заката и длину дня для каждого дня года.",
@@ -198,6 +208,8 @@ LANG = {
         "lang": "Язык",
         "ordinate": "Час дня [h]",
         "impressum": ":information_source: Выходные данные",
+        "map": ":earth_africa: Карта",
+        "long_map": ":earth_africa: Выберите место на карте",
     }
 }
 
@@ -284,6 +296,11 @@ if "language" not in st.session_state:
     st.session_state.language = "de"
 
 T = LANG[st.session_state.language]
+# Lat, Lon initialisieren
+if "lat" not in st.session_state:
+    st.session_state.lat = 51.05
+if "lon" not in st.session_state:
+    st.session_state.lon = 13.74
 
 # Titel
 st.markdown(f"# {T['title']}")
@@ -291,8 +308,17 @@ st.markdown(T["subtitle"])
 
 # Sidebar: Standort & Jahr
 st.sidebar.header(T["location_settings"])
-lat = st.sidebar.number_input(T["latitude"], value=51.0504, format="%.6f")
-lon = st.sidebar.number_input(T["longitude"], value=13.7373, format="%.6f")
+lat = st.sidebar.number_input(T["latitude"], value=st.session_state.lat, format="%.6f")
+if abs(lat-st.session_state.lat) > 1e-3:
+    st.session_state.lat = lat
+    #st.rerun()
+    
+lon = st.sidebar.number_input(T["longitude"], value=st.session_state.lon, format="%.6f")
+if abs(lon-st.session_state.lon) > 1e-3:
+    st.session_state.lon = lon
+    #st.rerun()
+
+
 year = st.sidebar.number_input(T["year"], value=2026, step=1)
 
 # Standortinfo & Zeitzone
@@ -357,14 +383,14 @@ extreme_indices = {
 }
 
 # Tabs
-tab1, tab2, tab3, tab4 = st.tabs([T["chart"], T["extremes"], T["table"], T["impressum"]])
+tab1, tab2, tab3, tab4, tab5 = st.tabs([T["chart"], T["extremes"], T["table"], T["map"], T["impressum"]])
 
 # ---------------------------------------------------------
 # 📈 Diagramm (mit Linienstilen & Markern)
 # ---------------------------------------------------------
 with tab1:
     #st.subheader(f"{T['long_chart']} {T['sunrise']}, {T['sunset']} & {T['daylength']} {year}")
-    st.subheader(f"📈 {T['sunrise']}, {T['sunset']} & {T['daylength']} {year}")
+    st.subheader(f"📈 {T['sunrise']}, {T['sunset']} & {T['daylength']} {year}, {info['city']}/{info['country']}")
     fig = go.Figure()
 
     # Sonnenaufgang – gestrichelte Linie
@@ -429,13 +455,13 @@ with tab1:
         yaxis=dict(showgrid=True, gridcolor="gray", gridwidth=0.1, griddash="dot", nticks=30)
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 # ---------------------------------------------------------
 # ⭐ Extremwerte
 # ---------------------------------------------------------
 with tab2:
-    st.subheader(f"{T['long_extremes']} {year}")
+    st.subheader(f"{T['long_extremes']} {year}, {info['city']}/{info['country']}")
     df_ext = pd.DataFrame({
         T["event_col"]: [
             T["min_sunrise"], T["max_sunrise"],
@@ -460,13 +486,13 @@ with tab2:
         ]
     })
 
-    st.dataframe(df_ext, use_container_width=True)
+    st.dataframe(df_ext, width='stretch')
 
 # ---------------------------------------------------------
 # 📅 Jahrestabelle
 # ---------------------------------------------------------
 with tab3: 
-    st.subheader(f"{T['long_table']} {year}")
+    st.subheader(f"{T['long_table']} {year}, {info['city']}/{info['country']}")
     rows = [] 
     for i, (d, srt, sst, dlen) in enumerate(zip(dates, sr_str, ss_str, dl_str), start=1): 
         rows.append({ 
@@ -478,15 +504,32 @@ with tab3:
             T["minmax_col"]: "*" if (i - 1) in extreme_indices else "" 
             }) 
     df = pd.DataFrame(rows) 
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df,  width='stretch')
+# ---------------------------------------------------------
+# Karte
+# ---------------------------------------------------------
+with tab4: 
+    st.title(T["long_map"])
+    m = folium.Map(location=[st.session_state.lat, st.session_state.lon], zoom_start=8)
+    output = st_folium(m, width=700, height=500)
+    
+    # Koordinaten auslesen, wenn ein Klick erfolgt ist
+    if output["last_clicked"]:
+        lat = output["last_clicked"]["lat"]
+        lon = output["last_clicked"]["lng"]
+        st.success(f"Ausgewählter Ort: Breitengrad {lat}, Längengrad {lon}")
+        st.session_state.lat = lat
+        st.session_state.lon = lon
+        st.rerun()
+    
 # ---------------------------------------------------------
 # Impressum
 # ---------------------------------------------------------
-with tab4: 
+with tab5: 
     st.subheader(T['impressum'])
     #st.write('me')
     #st.markdown("[✉ Feedback](mailto:astro01239@gmail.com)")
     st.write("✉ [astro01239@gmail.com](mailto:astro01239@gmail.com)")
 
 # ---------------------------------------------------------
-
+    
