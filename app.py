@@ -28,6 +28,7 @@ import folium
 LANG = {
     "de": {
         "title": "🌅 Jahresanalyse der Tageslänge",
+        "short_title": "Tageslänge",
         "subtitle": "Berechne Sonnenaufgang, Sonnenuntergang und Tageslänge für jeden Tag eines Jahres.",
         "location_settings": "📍 Standort & Einstellungen",
         "latitude": "Breitengrad",
@@ -51,20 +52,21 @@ LANG = {
         "max_sunset": "Spätester Sonnenuntergang",
         "min_day": "Kürzeste Tageslänge",
         "max_day": "Längste Tageslänge",
-        "day_col": "Tageslänge (h)",
+        "day_col": "Länge",
         "date_col": "Datum",
         "event_col": "Ereignis",
-        "value_col": "Zeit / Länge",
-        "day_index_col": "Tag#",
+        "value_col": "HH:MM",
+        "day_index_col": "Tag",
         "minmax_col": "Min/Max",
         "lang": "Sprache",
-        "ordinate": "Stunde des Tages [h]",
+        "ordinate": "Stunde des Tages",
         "impressum": ":information_source: Impressum",
         "map": ":earth_africa: Karte",
         "long_map": ":earth_africa: Standortauswahl Zoom & Click",
     },
     "en": {
         "title": "🌅 Annual variation in day length.",
+        "short_title": "Day length",
         "subtitle": "Calculate sunrise, sunset and day length for every day of the year.",
         "location_settings": "📍 Location & Settings",
         "latitude": "Latitude",
@@ -88,20 +90,21 @@ LANG = {
         "max_sunset": "Latest sunset",
         "min_day": "Shortest day",
         "max_day": "Longest day",
-        "day_col": "Day length (h)",
+        "day_col": "Length",
         "date_col": "Date",
         "event_col": "Event",
-        "value_col": "Time / length",
-        "day_index_col": "Day#",
+        "value_col": "HH:MM",
+        "day_index_col": "Day",
         "minmax_col": "Min/Max",
         "lang": "Language",
-        "ordinate": "Hour of the day [h]",
+        "ordinate": "Hour of the day",
         "impressum": ":information_source: Legal Notice",
         "map": ":earth_africa: Map",
         "long_map": ":earth_africa: Pick location from map, Zoom & Click",
     },
     "fr": {
         "title": "🌅 Variation annuelle de la photopériode",
+        "short_title": "Photopériode",
         "subtitle": "Calcule le lever, le coucher du soleil et la durée du jour pour chaque jour de l'année.",
         "location_settings": "📍 Localisation et paramètres",
         "latitude": "Latitude",
@@ -125,20 +128,21 @@ LANG = {
         "max_sunset": "Coucher le plus tard",
         "min_day": "Jour le plus court",
         "max_day": "Jour le plus long",
-        "day_col": "Durée du jour (h)",
+        "day_col": "Durée",
         "date_col": "Date",
         "event_col": "Événement",
-        "value_col": "Heure / durée",
-        "day_index_col": "Jour#",
+        "value_col": "HH:MM",
+        "day_index_col": "Jour",
         "minmax_col": "Min/Max",
         "lang": "Langue",
-        "ordinate": "Heure du jour [h]",
+        "ordinate": "Heure du jour",
         "impressum": ":information_source: Mentions Légales",
         "map": ":earth_africa: Carte",
         "long_map": ":earth_africa: Choisissez un lieu sur la carte, zoomer et cliquer",
     },
     "es": {
         "title": "🌅 Variación estacional de la duración del día",
+        "short_title": "Duración del día",
         "subtitle": "Calcula el amanecer, atardecer y duración del día para cada día del año.",
         "location_settings": "📍 Ubicación y ajustes",
         "latitude": "Latitud",
@@ -162,20 +166,21 @@ LANG = {
         "max_sunset": "Atardecer más tardío",
         "min_day": "Día más corto",
         "max_day": "Día más largo",
-        "day_col": "Duración del día (h)",
+        "day_col": "Duración",
         "date_col": "Fecha",
         "event_col": "Evento",
-        "value_col": "Hora / duración",
-        "day_index_col": "Día#",
+        "value_col": "HH:MM",
+        "day_index_col": "Día",
         "minmax_col": "Min/Max",
         "lang" : "Idioma",
-        "ordinate": "Hora del día [h]",
+        "ordinate": "Hora del día",
         "impressum": ":information_source: Aviso Legal",
         "map": ":earth_africa: Mapa",
         "long_map": ":earth_africa: Selecciona un lugar en el mapa, zoom y clic",
      },
     "ru": {
         "title": "🌅 Годовой ход продолжительности дня",
+        "short_title": "Продолжительность дня",
         "subtitle": "Рассчитайте время восхода, заката и длину дня для каждого дня года.",
         "location_settings": "📍 Местоположение и настройки",
         "latitude": "Широта",
@@ -199,14 +204,14 @@ LANG = {
         "max_sunset": "Самый поздний закат",
         "min_day": "Самый короткий день",
         "max_day": "Самый длинный день",
-        "day_col": "Длина дня (ч)",
+        "day_col": "Длина дня",
         "date_col": "Дата",
         "event_col": "Событие",
-        "value_col": "Время / длина",
-        "day_index_col": "День#",
+        "value_col": "ч.мин.",
+        "day_index_col": "День",
         "minmax_col": "Мин/Макс",
         "lang": "Язык",
-        "ordinate": "Час дня [h]",
+        "ordinate": "Час дня",
         "impressum": ":information_source: Выходные данные",
         "map": ":earth_africa: Карта",
         "long_map": ":earth_africa: Выберите место на карте, зум и клик",
@@ -289,13 +294,16 @@ def compute_sun_times(lat, lon, year, tz):
 # ---------------------------------------------------------
 # 🖥 Streamlit UI
 # ---------------------------------------------------------
-st.set_page_config(page_title="Sonnenzeiten", page_icon="🌅", layout="wide")
 
 # Sprache oben initialisieren
 if "language" not in st.session_state:
     st.session_state.language = "de"
 
 T = LANG[st.session_state.language]
+
+st.set_page_config(page_title=T['short_title'], page_icon="🌅", layout="wide")
+
+
 # Lat, Lon initialisieren
 if "lat" not in st.session_state:
     st.session_state.lat = 51.049758
