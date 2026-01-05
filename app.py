@@ -306,9 +306,9 @@ st.set_page_config(page_title=T['short_title'], page_icon="🌅", layout="wide")
 
 # Lat, Lon initialisieren
 if "lat" not in st.session_state:
-    st.session_state.lat = 51.049758
+    st.session_state.lat = 51.476465
 if "lon" not in st.session_state:
-    st.session_state.lon = 13.738060
+    st.session_state.lon = 0.000644
 
 # Titel
 st.markdown(f"# {T['title']}")
