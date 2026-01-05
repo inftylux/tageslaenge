@@ -55,7 +55,7 @@ LANG = {
         "day_col": "Länge",
         "date_col": "Datum",
         "event_col": "Ereignis",
-        "value_col": "HH:MM",
+        "value_col": "Zeit",
         "day_index_col": "Tag",
         "minmax_col": "Min/Max",
         "lang": "Sprache",
@@ -93,7 +93,7 @@ LANG = {
         "day_col": "Length",
         "date_col": "Date",
         "event_col": "Event",
-        "value_col": "HH:MM",
+        "value_col": "Time",
         "day_index_col": "Day",
         "minmax_col": "Min/Max",
         "lang": "Language",
@@ -131,7 +131,7 @@ LANG = {
         "day_col": "Durée",
         "date_col": "Date",
         "event_col": "Événement",
-        "value_col": "HH:MM",
+        "value_col": "Temps",
         "day_index_col": "Jour",
         "minmax_col": "Min/Max",
         "lang": "Langue",
@@ -169,7 +169,7 @@ LANG = {
         "day_col": "Duración",
         "date_col": "Fecha",
         "event_col": "Evento",
-        "value_col": "HH:MM",
+        "value_col": "Tiempo",
         "day_index_col": "Día",
         "minmax_col": "Min/Max",
         "lang" : "Idioma",
@@ -207,7 +207,7 @@ LANG = {
         "day_col": "Длина дня",
         "date_col": "Дата",
         "event_col": "Событие",
-        "value_col": "ч.мин.",
+        "value_col": "Время",
         "day_index_col": "День",
         "minmax_col": "Мин/Макс",
         "lang": "Язык",
@@ -372,9 +372,11 @@ dates, sr, ss, dl = compute_sun_times(lat, lon, year, tz)
 # Hilfswerte
 sr_hours = [t.hour + t.minute/60 + t.second/3600 for t in sr]
 ss_hours = [t.hour + t.minute/60 + t.second/3600 for t in ss]
-sr_str = [t.strftime("%H:%M") for t in sr]
-ss_str = [t.strftime("%H:%M") for t in ss]
-dl_str = [f"{int(x)}:{int((x % 1) * 60):02d}" for x in dl]
+sr_str = [t.strftime("%H:%M:%S") for t in sr]
+ss_str = [t.strftime("%H:%M:%S") for t in ss]
+#dl_str = [f"{int(x)}:{int((x % 1) * 60):02d}" for x in dl]
+dl_str = [f"{int(x):02d}:{int((x % 1) * 60):02d}:{int((x * 3600) % 60):02d}" for x in dl]
+
 
 # Extremwerte
 idx_min_sr = int(np.argmin(sr_hours))
@@ -479,25 +481,28 @@ with tab2:
     st.subheader(f"{T['long_extremes']} {year}, {info['city']}/{info['country']}")
     df_ext = pd.DataFrame({
         T["event_col"]: [
-            T["min_sunrise"], T["max_sunrise"],
-            T["min_sunset"], T["max_sunset"],
-            T["min_day"], T["max_day"]
+            T["min_sunrise"], 
+            T["max_day"],
+            T["max_sunset"],
+            T["min_sunset"], 
+            T["min_day"], 
+            T["max_sunrise"],
         ],
         T["date_col"]: [
             dates[idx_min_sr].strftime("%d.%m.%Y"),
-            dates[idx_max_sr].strftime("%d.%m.%Y"),
-            dates[idx_min_ss].strftime("%d.%m.%Y"),
-            dates[idx_max_ss].strftime("%d.%m.%Y"),
-            dates[idx_min_dl].strftime("%d.%m.%Y"),
             dates[idx_max_dl].strftime("%d.%m.%Y"),
+            dates[idx_max_ss].strftime("%d.%m.%Y"),
+            dates[idx_min_ss].strftime("%d.%m.%Y"),
+            dates[idx_min_dl].strftime("%d.%m.%Y"),
+            dates[idx_max_sr].strftime("%d.%m.%Y"),
         ],
         T["value_col"]: [
             sr_str[idx_min_sr],
-            sr_str[idx_max_sr],
-            ss_str[idx_min_ss],
-            ss_str[idx_max_ss],
-            dl_str[idx_min_dl],
             dl_str[idx_max_dl],
+            ss_str[idx_max_ss],
+            ss_str[idx_min_ss],
+            dl_str[idx_min_dl],
+            sr_str[idx_max_sr],
         ]
     })
 
@@ -519,7 +524,18 @@ with tab3:
             T["minmax_col"]: "*" if (i - 1) in extreme_indices else "" 
             }) 
     df = pd.DataFrame(rows) 
-    st.dataframe(df,  width='stretch', hide_index=True)
+    #st.dataframe(df,  width='stretch', hide_index=True)
+    #df = df.reset_index(drop=True)
+    df = df.set_index(T["day_index_col"])
+    # --- Zeilen hervorheben ---
+    def highlight_minmax(row):
+        if row[T["minmax_col"]] == "*":
+            return ['background-color: #99c2ff'] * len(row)
+        return [''] * len(row)
+
+    styled_df = df.style.apply(highlight_minmax, axis=1)
+    st.table(styled_df)
+
 # ---------------------------------------------------------
 # Karte
 # ---------------------------------------------------------
@@ -547,4 +563,6 @@ with tab5:
     st.write("✉ [astro01239@gmail.com](mailto:astro01239@gmail.com)")
 
 # ---------------------------------------------------------
-    
+
+
+
