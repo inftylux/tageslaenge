@@ -1,5 +1,3 @@
-Here you go — a clean, polished **English version** of the README, written so it feels natural for GitHub and clearly communicates what your app does. I kept it concise but informative, just like a good project landing page.
-
 ---
 
 # 🌅 Daylength App  
