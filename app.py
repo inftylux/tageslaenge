@@ -65,9 +65,9 @@ LANG = {
         "long_map": ":earth_africa: Standortauswahl Zoom & Click",
     },
     "en": {
-        "title": "🌅 Annual variation in day length.",
+        "title": "🌅 Annual variation in day length",
         "short_title": "Day length",
-        "subtitle": "Calculate sunrise, sunset and day length for every day of the year.",
+        "subtitle": "Calculate sunrise, sunset and day length for every day of the year",
         "location_settings": "📍 Location & Settings",
         "latitude": "Latitude",
         "longitude": "Longitude",
@@ -105,7 +105,7 @@ LANG = {
     "fr": {
         "title": "🌅 Variation annuelle de la photopériode",
         "short_title": "Photopériode",
-        "subtitle": "Calcule le lever, le coucher du soleil et la durée du jour pour chaque jour de l'année.",
+        "subtitle": "Calcule le lever, le coucher du soleil et la durée du jour pour chaque jour de l'année",
         "location_settings": "📍 Localisation et paramètres",
         "latitude": "Latitude",
         "longitude": "Longitude",
@@ -143,7 +143,7 @@ LANG = {
     "es": {
         "title": "🌅 Variación estacional de la duración del día",
         "short_title": "Duración del día",
-        "subtitle": "Calcula el amanecer, atardecer y duración del día para cada día del año.",
+        "subtitle": "Calcula el amanecer, atardecer y duración del día para cada día del año",
         "location_settings": "📍 Ubicación y ajustes",
         "latitude": "Latitud",
         "longitude": "Longitud",
@@ -181,7 +181,7 @@ LANG = {
     "ru": {
         "title": "🌅 Годовой ход продолжительности дня",
         "short_title": "Продолжительность дня",
-        "subtitle": "Рассчитайте время восхода, заката и длину дня для каждого дня года.",
+        "subtitle": "Рассчитайте время восхода, заката и длину дня для каждого дня года",
         "location_settings": "📍 Местоположение и настройки",
         "latitude": "Широта",
         "longitude": "Долгота",
@@ -297,7 +297,7 @@ def compute_sun_times(lat, lon, year, tz):
 
 # Sprache oben initialisieren
 if "language" not in st.session_state:
-    st.session_state.language = "de"
+    st.session_state.language = "en"
 
 T = LANG[st.session_state.language]
 
