@@ -4,8 +4,8 @@
 Interactive annual analysis of sunrise, sunset, and daylight duration
 
 ## 📌 Overview  
-The Daylength App is an interactive Streamlit application that calculates sunrise, sunset, and daylength for every day of any selected year.  
-It uses precise astronomical calculations (Astral library) and provides a modern, multilingual user interface optimized for desktop and mobile devices.
+The Daylength App is an interactive Streamlit application that calculates sunrise, sunset, and daylength for every day of any selected year.
+It uses precise astronomical calculations (Astral library) and provides a multilingual user interface optimized for desktop and mobile devices.
 
 ---
 
