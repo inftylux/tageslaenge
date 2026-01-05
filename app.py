@@ -452,7 +452,14 @@ with tab1:
         template="plotly_white",
         height=600,
         xaxis=dict(showgrid=True, gridcolor="gray", gridwidth=0.1, griddash="dot", nticks=30),
-        yaxis=dict(showgrid=True, gridcolor="gray", gridwidth=0.1, griddash="dot", nticks=30)
+        yaxis=dict(showgrid=True, gridcolor="gray", gridwidth=0.1, griddash="dot", nticks=30),
+        legend=dict(
+            orientation="h",      # horizontale Legende
+            yanchor="top",
+            y=-0.2,               # Abstand unterhalb des Charts
+            xanchor="center",
+            x=0.5
+        )
     )
 
     st.plotly_chart(fig, width='stretch')
