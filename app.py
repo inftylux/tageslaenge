@@ -493,7 +493,7 @@ with tab2:
         ]
     })
 
-    st.dataframe(df_ext, width='stretch')
+    st.dataframe(df_ext, width='stretch', hide_index=True)
 
 # ---------------------------------------------------------
 # 📅 Jahrestabelle
@@ -511,7 +511,7 @@ with tab3:
             T["minmax_col"]: "*" if (i - 1) in extreme_indices else "" 
             }) 
     df = pd.DataFrame(rows) 
-    st.dataframe(df,  width='stretch')
+    st.dataframe(df,  width='stretch', hide_index=True)
 # ---------------------------------------------------------
 # Karte
 # ---------------------------------------------------------
