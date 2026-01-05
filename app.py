@@ -29,7 +29,7 @@ LANG = {
     "de": {
         "title": "🌅 Jahresanalyse der Tageslänge",
         "short_title": "Tageslänge",
-        "subtitle": "Berechne Sonnenaufgang, Sonnenuntergang und Tageslänge für jeden Tag eines Jahres.",
+        "subtitle": "Sonnenaufgang, Sonnenuntergang und Tageslänge für jeden Tag eines Jahres an einem beliebigen Standort",
         "location_settings": "📍 Standort & Einstellungen",
         "latitude": "Breitengrad",
         "longitude": "Längengrad",
@@ -67,7 +67,7 @@ LANG = {
     "en": {
         "title": "🌅 Annual variation in day length",
         "short_title": "Day length",
-        "subtitle": "Calculate sunrise, sunset and day length for every day of the year",
+        "subtitle": "Calculate sunrise, sunset and day length for every day of the year at any location",
         "location_settings": "📍 Location & Settings",
         "latitude": "Latitude",
         "longitude": "Longitude",
@@ -105,7 +105,7 @@ LANG = {
     "fr": {
         "title": "🌅 Variation annuelle de la photopériode",
         "short_title": "Photopériode",
-        "subtitle": "Calcule le lever, le coucher du soleil et la durée du jour pour chaque jour de l'année",
+        "subtitle": "Calcule le lever, le coucher du soleil et la durée du jour pour chaque jour de l'année à n'importe quel endroit",
         "location_settings": "📍 Localisation et paramètres",
         "latitude": "Latitude",
         "longitude": "Longitude",
@@ -143,7 +143,7 @@ LANG = {
     "es": {
         "title": "🌅 Variación estacional de la duración del día",
         "short_title": "Duración del día",
-        "subtitle": "Calcula el amanecer, atardecer y duración del día para cada día del año",
+        "subtitle": "Calcula el amanecer, atardecer y duración del día para cada día del año en cualquier ubicación",
         "location_settings": "📍 Ubicación y ajustes",
         "latitude": "Latitud",
         "longitude": "Longitud",
@@ -181,7 +181,7 @@ LANG = {
     "ru": {
         "title": "🌅 Годовой ход продолжительности дня",
         "short_title": "Продолжительность дня",
-        "subtitle": "Рассчитайте время восхода, заката и длину дня для каждого дня года",
+        "subtitle": "Рассчитайте время восхода, заката и длину дня для каждого дня года в любом месте",
         "location_settings": "📍 Местоположение и настройки",
         "latitude": "Широта",
         "longitude": "Долгота",
